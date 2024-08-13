@@ -9,6 +9,7 @@ const privateKey = 'edskRw9cmJHdamzp2kM6aHJ2ZP3DfYPkd7FBnC6L8bpX7gaLBjLqx6mEg9vX
 Tezos.setProvider({ signer: new InMemorySigner(privateKey) });
 
 const contractAddress = "KT1LoxZ4EKVpFobLjEo5R3CoZZwB6MtDToSB"
+const contract = await Tezos.contract.at(contractAddress);
 
 const app = express();
 const env = process.env
@@ -22,7 +23,6 @@ app.use(express.urlencoded({ extended: true }));
 app.post("/blockchain", async (req, res) =>{
     const data = req.body;
     console.log(data);
-    const contract = await Tezos.contract.at(contractAddress);
     const now = new Date();
     data.timestamp = now.toISOString();
     const operation = await contract.methodsObject.default(data).send();
